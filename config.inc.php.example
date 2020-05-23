@@ -1,0 +1,8 @@
+<?php
+
+define("FONTEFIER_MYSQL_HOST",        "localhost");
+define("FONTEFIER_MYSQL_USER",        "user");
+define("FONTEFIER_MYSQL_PASSWORD",    "password");
+define("FONTEFIER_MYSQL_DATABASE",    "ufontefier");
+
+?>
