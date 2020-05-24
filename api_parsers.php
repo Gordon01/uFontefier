@@ -64,6 +64,40 @@ function api_parse_font($request, &$responce, &$database)
     }
 }
 
+function api_parse_fonts($request, &$responce, &$database)
+{
+    $request_method = $_SERVER['REQUEST_METHOD'];
+
+    if ($request_method == "POST")
+    {
+        $responce["ok"]            = false;
+        $responce["error_code"]    = API_ERROR_METHOD_UNSUPPORTED;
+        $responce["http_code"]     = 501;
+        $responce["description"]   = "Method `" . $request_method . 
+            "` is not allowed for endpoint `" . $request[1] . "`";
+    }
+    else
+    {
+        $fonts = $database->select("fonts", [
+            "fontId", "width", "height", "name", "userId", "shared"
+        ]);
+
+        if ($fonts === null)
+        {
+            $responce["ok"]            = false;
+            $responce["error_code"]    = API_ERROR_NOT_FOUND;
+            $responce["http_code"]     = 404;
+            $responce["description"]   = "User has no fonts created";
+
+            return false;
+        }
+
+        $responce["ok"] = true;
+
+        return $fonts;
+    }
+}
+
 function api_parse_glyph($request, &$responce, &$database)
 {
     $request_method = $_SERVER['REQUEST_METHOD'];

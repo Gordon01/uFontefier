@@ -39,6 +39,10 @@ switch ($endpoint) {
         $responce_result = api_parse_font($request, $responce, $database);
         break;
 
+    case "fonts":
+        $responce_result = api_parse_fonts($request, $responce, $database);
+        break;
+
     case "glyph":
         $responce_result = api_parse_glyph($request, $responce, $database);
         break;
