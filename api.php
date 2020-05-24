@@ -32,7 +32,13 @@ if ($endpoint === false)
 
 /* Parsing a request */
 
+$responce["http_code"] = 200;
+
 switch ($endpoint) {
+    case "font":
+        $responce_result = api_parse_font($request, $responce, $database);
+        break;
+
     case "glyph":
         $responce_result = api_parse_glyph($request, $responce, $database);
         break;
