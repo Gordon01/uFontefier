@@ -7,7 +7,7 @@ header("Content-Type: application/json; charset=UTF-8");
 require_once "vendor/autoload.php";
 require_once "config.inc.php";
 require_once "api_error_codes.inc.php";
-require_once "api_parsers.php";
+require_once "api_handlers.php";
 
 // Using Medoo namespace
 use Medoo\Medoo;
