@@ -6,21 +6,11 @@ header("Content-Type: application/json; charset=UTF-8");
 
 require_once "vendor/autoload.php";
 require_once "config.inc.php";
-require_once "api_error_codes.inc.php";
 require_once "api_handlers.php";
+require_once "auth.php";
+require_once "db.php";
 
-// Using Medoo namespace
-use Medoo\Medoo;
-
-$database = new Medoo([
-    'database_type' => 'mysql',
-    'database_name' => FONTEFIER_MYSQL_DATABASE,
-    'server' =>        FONTEFIER_MYSQL_HOST,
-    'username' =>      FONTEFIER_MYSQL_USER,
-    'password' =>      FONTEFIER_MYSQL_PASSWORD,
-    'charset' =>       'utf8mb4',
-	'collation' =>     'utf8mb4_general_ci',
-]);
+/* Getting a request */
 
 $request = $_SERVER['REQUEST_URI'];
 $request = explode('/', trim($request, '/'));
@@ -30,21 +20,25 @@ if ($endpoint === false)
     $endpoint = $request[1];
 }
 
+/* Connecting to database */
+
+databaseInit();
+
 /* Parsing a request */
 
 $responce["http_code"] = 200;
 
 switch ($endpoint) {
     case "font":
-        $responce_result = api_parse_font($request, $responce, $database);
+        $responce_result = api_handle_font($request, $responce);
         break;
 
     case "fonts":
-        $responce_result = api_parse_fonts($request, $responce, $database);
+        $responce_result = api_handle_fonts($request, $responce);
         break;
 
     case "glyph":
-        $responce_result = api_parse_glyph($request, $responce, $database);
+        $responce_result = api_handle_glyph($request, $responce);
         break;
     
     case "":
@@ -58,7 +52,7 @@ switch ($endpoint) {
 
 /* Sending a responce */
 
-if ($responce["ok"] === true)
+if ($responce["http_code"] === 200)
 {
     unset($responce["description"]);
     unset($responce["error_code"]);
